@@ -1,0 +1,73 @@
+<!-- UserMapper.xml -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.mapper.HomeMapper">
+    <!-- 登録処理 -->
+    <insert id="registBlogUrl" parameterType="com.project.form.ContentsForm">
+        INSERT INTO SPRINGPROJECT.URL_STORAGE (title, url, description)
+        VALUES (#{title}, #{url}, #{description})
+    </insert>
+
+    <!-- 情報取得処理 -->
+    <select id="getBlogUrls" resultType="com.project.entity.UrlStorage">
+        SELECT * FROM (
+            SELECT t.*, ROWNUM r FROM (
+                SELECT * FROM SPRINGPROJECT.URL_STORAGE ORDER BY id
+                ) t
+             )
+        WHERE r BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+    </select>
+
+    <!-- 個数取得処理 -->
+    <select id="getCountUrls"
+            resultType="int">
+        SELECT COUNT(*) FROM SPRINGPROJECT.URL_STORAGE
+    </select>
+
+    <!-- 更新処理 -->
+    <update id="updateBlogContents" parameterType="com.project.form.ContentsForm">
+        UPDATE SPRINGPROJECT.URL_STORAGE
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="description != null">description = #{description},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 削除処理 -->
+    <delete id="deleteBlogContents" parameterType="java.lang.Long">
+        DELETE FROM SPRINGPROJECT.URL_STORAGE
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 検索処理 -->
+    <!-- 検索処理 -->
+    <select id="getSearchResult" resultType="com.project.entity.UrlStorage">
+        SELECT * FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY id) r, t.*
+        FROM (
+        SELECT * FROM SPRINGPROJECT.URL_STORAGE
+        WHERE
+        <choose>
+            <when test="searchForm.searchType == 'exact'">
+                (#{searchForm.title} IS NOT NULL AND title = #{searchForm.title})
+                AND (#{searchForm.description} IS NULL OR description LIKE '%' || #{searchForm.description} || '%')
+            </when>
+            <when test="searchForm.searchType == 'partial'">
+                (#{searchForm.title} IS NULL OR title LIKE '%' || #{searchForm.title} || '%')
+                AND (#{searchForm.description} IS NULL OR description LIKE '%' || #{searchForm.description} || '%')
+            </when>
+            <otherwise>
+                (#{searchForm.description} IS NULL OR description LIKE '%' || #{searchForm.description} || '%')
+            </otherwise>
+        </choose>
+        ORDER BY id
+        ) t
+        )
+        WHERE r BETWEEN #{searchForm.startIndex} + 1 AND #{searchForm.startIndex} + #{searchForm.limit}
+    </select>
+
+</mapper>
