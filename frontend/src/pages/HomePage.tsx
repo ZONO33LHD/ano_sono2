@@ -74,13 +74,20 @@ const Page: React.FC = () => {
   const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
     setErrorMessage("");
+    if (editingPostId === undefined) {
+      console.error("editingPostId is undefined");
+      return;
+    }
     try {
-      const response = await axios.put(`http://localhost:8000/api/blog/edit/${editingPostId}`, {
-        id: editingPostId,
-        title: editingTitle,
-        url: editingUrl,
-        description: editingDescription,
-      });
+      const response = await axios.put(
+        `http://localhost:8000/api/blog/edit/${editingPostId}`,
+        {
+          id: editingPostId ? editingPostId.toString() : null,
+          title: editingTitle,
+          url: editingUrl,
+          description: editingDescription,
+        }
+      );
       if (response.data.startsWith("URLが正しくありません")) {
         setErrorMessage(response.data);
       } else {
@@ -107,7 +114,7 @@ const Page: React.FC = () => {
     // 編集モーダルを閉じ、編集中の投稿IDをリセットする
     setEditModalOpen(false);
     setEditingPostId(null);
-    setErrorMessage(''); 
+    setErrorMessage("");
   };
 
   useEffect(() => {
@@ -159,7 +166,9 @@ const Page: React.FC = () => {
           },
         ]);
         // 投稿の総数を再取得
-        const countResponse = await axios.get("http://localhost:8000/api/blog/count");
+        const countResponse = await axios.get(
+          "http://localhost:8000/api/blog/count"
+        );
         setTotalPages(Math.ceil(countResponse.data / 5));
         setCurrentPage(Math.ceil(countResponse.data / 5)); // 追加: currentPageを最新のページに更新
       }
@@ -169,6 +178,10 @@ const Page: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
+    if (id === undefined) {
+      console.error("id is undefined");
+      return;
+    }
     axios
       .delete(`http://localhost:8000/api/blog/delete/${id}`)
       .then((response) => {
@@ -205,16 +218,15 @@ const Page: React.FC = () => {
   }, [currentPage]);
 
   // コンポーネント内部
-useEffect(() => {
-  // コンポーネントがマウントされたときに背景色を黒に設定(bg-gray-200)
-  document.body.style.backgroundColor = '#E5E7EB';
+  useEffect(() => {
+    // コンポーネントがマウントされたときに背景色を黒に設定(bg-gray-200)
+    document.body.style.backgroundColor = "#E5E7EB";
 
-  // コンポーネントがアンマウントされたときに背景色をリセット
-  return () => {
-    document.body.style.backgroundColor = '';
-  };
-}, []);
-
+    // コンポーネントがアンマウントされたときに背景色をリセット
+    return () => {
+      document.body.style.backgroundColor = "";
+    };
+  }, []);
 
   return (
     <>
@@ -320,7 +332,9 @@ useEffect(() => {
                   >
                     気になる保管したいサイトを登録しよう！
                   </h2>
-                  {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                  {errorMessage && (
+                    <p className="text-red-500">{errorMessage}</p>
+                  )}
                   <form onSubmit={handleSubmit}>
                     <input
                       type="text"
@@ -393,7 +407,9 @@ useEffect(() => {
                   >
                     投稿を編集
                   </h2>
-                  {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                  {errorMessage && (
+                    <p className="text-red-500">{errorMessage}</p>
+                  )}
                   <form onSubmit={handleUpdate}>
                     <input
                       type="text"

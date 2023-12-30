@@ -50,26 +50,26 @@ export default function Search() {
   // 検索関数内で、どちらのチェックボックスが選択されているかに基づいて検索ロジックを分岐
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     let searchType = "";
     if (isExactMatch) {
       searchType = "exact";
     } else if (isPartialMatch) {
       searchType = "partial";
     }
-
-    console.log(searchType); // ここでsearchTypeの値をログに出力
-
+  
     const response = await axios.post(`http://localhost:8000/api/blog/search`, {
       title: searchTerm,
       description: descriptionTerm,
       startIndex: startIndex,
-      limit: limit,
-      searchType: searchType, // ここでsearchTypeをPOSTリクエストのボディに含める
+      limit: limit + 1, // 1つ余分に取得
+      searchType: searchType,
     });
-
-    setSearchResults(response.data);
-    setShowLoadMoreButton(response.data.length >= limit);
+  
+    // 取得した投稿を表示
+    setSearchResults(response.data.slice(0, limit));
+    // "もっと見る"ボタンの表示状態を更新
+    setShowLoadMoreButton(response.data.length > limit);
   };
 
   const loadMoreResults = async () => {
@@ -114,15 +114,18 @@ export default function Search() {
           setErrorMessage(response.data);
         } else {
           // 編集が成功したら、全ての投稿を再取得
-          axios
-            .get("http://localhost:8000/api/blog/get?startIndex=0")
-            .then((response) => {
-              setSearchResults(response.data);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-
+          setSearchResults((prevResults) =>
+            prevResults.map((result) =>
+              result.id === editId
+                ? {
+                    ...result,
+                    title: editTitle,
+                    url: editUrl,
+                    description: editDescription,
+                  }
+                : result
+            )
+          );
           setShowModal(false); // モーダルを閉じる
         }
       })
@@ -139,6 +142,23 @@ export default function Search() {
         setSearchResults((prevResults) =>
           prevResults.filter((result) => result.id !== id)
         );
+        // 新たに2つの投稿を取得
+        axios
+          .post(`http://localhost:8000/api/blog/search`, {
+            title: searchTerm,
+            description: descriptionTerm,
+            startIndex: searchResults.length - 1, // 削除後の投稿数をstartIndexとする
+            limit: 2, // 2つ取得
+          })
+          .then((response) => {
+            // 取得した投稿を追加
+            setSearchResults((prevResults) => [...prevResults, ...response.data.slice(0, 1)]);
+            // "もっと見る"ボタンの表示状態を更新
+            setShowLoadMoreButton(response.data.length > 1);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       })
       .catch((error) => {
         console.error(error);

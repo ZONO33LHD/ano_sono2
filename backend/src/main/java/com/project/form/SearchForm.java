@@ -12,4 +12,12 @@ public class SearchForm {
     private int startIndex;
     private int limit;
     private String searchType;
+
+    public String getTitleWithWildcards() {
+        return "%" + this.title + "%";
+    }
+
+    public String getDescriptionWithWildcards() {
+        return "%" + this.description + "%";
+    }
 }

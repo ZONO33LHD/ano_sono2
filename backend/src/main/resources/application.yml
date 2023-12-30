@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@DESKTOP-MMJJAVE:1521/XEPDB1
-    username: SpringProject
-    password: H19890123h
-    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:mysql://db:3306/ano_sono2
+    username: ano_sono2
+    password: ano_sono2
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # url: jdbc:oracle:thin:@DESKTOP-MMJJAVE:1521/XEPDB1
+    # username: SpringProject
+    # password: H19890123h
+    # driver-class-name: oracle.jdbc.OracleDriver
   mvc:
     static-path-pattern: /static/**
   application:

@@ -21,3 +21,21 @@ services:
     image: backend
     ports:
       - "8000:8000"
+
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    image: my_mysql
+    ports:
+      - "5634:5634"
+    environment:
+      MYSQL_ROOT_PASSWORD: ano_sono2
+      MYSQL_DATABASE: ano_sono2
+      MYSQL_USER: ano_sono2
+      MYSQL_PASSWORD: ano_sono2
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

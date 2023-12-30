@@ -37,6 +37,8 @@ public class HomeServiceImpl implements HomeService {
 	@Override
 	public List<UrlStorage> getBlogUrls(int limit, int offset) {
 		try {
+			// offsetが0未満の場合は0に設定
+			offset = Math.max(0, offset);
 			return homeMapper.getBlogUrls(limit, offset);
 		} catch (Exception e) {
 			e.printStackTrace();
