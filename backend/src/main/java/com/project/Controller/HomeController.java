@@ -44,13 +44,13 @@ public class HomeController {
 	// URL取得処理
 	@GetMapping("/api/blog/get")
 	public List<UrlStorage> handleGetRequest(@RequestParam int startIndex) {
-		int limit = 5;
+		int limit = 6;
 		// startIndexが0未満の場合は0に設定
 		startIndex = Math.max(0, startIndex);
 		urlList = homeService.getBlogUrls(limit, startIndex);
 		return urlList;
 	}
-	
+
 	// 登録されているURLの総数を取得する処理
 	@GetMapping("/api/blog/count")
 	public int handleGetCountRequest() {

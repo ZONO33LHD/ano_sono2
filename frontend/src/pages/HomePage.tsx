@@ -121,7 +121,7 @@ const Page: React.FC = () => {
     axios
       .get("http://localhost:8000/api/blog/count")
       .then((response) => {
-        setTotalPages(Math.ceil(response.data / 5));
+        setTotalPages(Math.ceil(response.data / 6));
       })
       .catch((error) => {
         console.error(error);
@@ -169,8 +169,8 @@ const Page: React.FC = () => {
         const countResponse = await axios.get(
           "http://localhost:8000/api/blog/count"
         );
-        setTotalPages(Math.ceil(countResponse.data / 5));
-        setCurrentPage(Math.ceil(countResponse.data / 5)); // 追加: currentPageを最新のページに更新
+        setTotalPages(Math.ceil(countResponse.data / 6));
+        setCurrentPage(Math.ceil(countResponse.data / 6)); // 追加: currentPageを最新のページに更新
       }
     } catch (error) {
       console.error(error);
@@ -189,7 +189,7 @@ const Page: React.FC = () => {
         axios
           .get("http://localhost:8000/api/blog/count")
           .then((response) => {
-            const newTotalPages = Math.ceil(response.data / 5);
+            const newTotalPages = Math.ceil(response.data / 6);
             setTotalPages(newTotalPages);
             if (currentPage > newTotalPages) {
               setCurrentPage(newTotalPages);
@@ -207,7 +207,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8000/api/blog/get?startIndex=${(currentPage - 1) * 5}`
+        `http://localhost:8000/api/blog/get?startIndex=${(currentPage - 1) * 6}`
       )
       .then((response) => {
         setPosts(response.data);
@@ -231,58 +231,59 @@ const Page: React.FC = () => {
   return (
     <>
       <main className="bg-gray-200">
-        <div>
+        <div className="relative w-full h-1/3-screen">
           <Image
             src={top_image}
             alt="ano_sono"
-            layout="responsive"
+            layout="fill"
             objectFit="cover"
-            width={1920}
-            height={400}
           />
         </div>
-        <div className="fixed mt-3  w-full flex justify-end bg-gray-200 z-10">
+        <div className="mt-7 w-full flex justify-end bg-gray-200 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
           <button
             onClick={handleOpenModal}
-            className="relative bg-green-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded mr-10"
+            className="relative bg-green-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
           >
             新規登録
           </button>
         </div>
-        <div className="mt-20">
+        <div className="mt-10 mr-4 ml-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto pb-10 mb-10">
           {posts.map((post) => (
             <div
               key={post.id}
-              className="card m-10 bg-white shadow-lg rounded-lg overflow-hidden my-4 block relative hover:shadow-xl transition-shadow duration-200 h-128 overflow-auto"
+              className="card bg-white shadow-lg rounded-lg overflow-hidden my-4 block relative hover:shadow-xl transition-shadow duration-200 min-h-32 md:min-h-64 overflow-auto"
             >
               <div>
                 <a href={post.url} target="_blank" className="card-body p-4">
-                  <h5 className="card-title pl-3 text-xl font-bold underline truncate">
+                  <h5 className="card-title pl-3 text-lg md:text-2xl font-bold underline truncate">
                     {post.title.length > 30
-                      ? `${post.title.substring(0, 60)}...`
+                      ? `${post.title.substring(0, 30)}...`
                       : post.title}
                   </h5>
-                  <p className="card-text pl-3 text-gray-700 mt-2 min-h-[size]">
+                  <p className="card-text pl-3 text-gray-700 mt-2 mb-8 mr-5 break-words md:line-clamp-4">
                     {post.description || "　"}
                   </p>
                 </a>
-                <button
-                  onClick={() => handleOpenEditModal(post.id)}
-                  className="absolute right-20 top-1/2 transform -translate-y-1/2 mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  編集
-                </button>
-                <button
-                  onClick={() => handleDelete(post.id)}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-16"
-                >
-                  削除
-                </button>
+                <div className="absolute bottom-0 right-0 flex">
+                  <button
+                    onClick={() => handleOpenEditModal(post.id)}
+                    className="mr-2 mb-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    編集
+                  </button>
+                  <button
+                    onClick={() => handleDelete(post.id)}
+                    className="mr-2 mb-3 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    削除
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
-        <div className="fixed bottom-16 w-full flex justify-center bg-gray-200 z-10">
+        <div className="h-10"></div>
+        <div className="fixed bottom-16 w-full flex justify-center bg-gray-200 z-10 mt-5">
           <button
             onClick={goToPreviousPage}
             disabled={currentPage === 1}
