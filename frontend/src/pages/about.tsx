@@ -4,14 +4,15 @@ import Footer from "../app/components/Footer";
 import Lottie from 'lottie-react';
 import animationData from '../../public/picopico.json';
 import checkAnimeData from '../../public/CheckAnime.json';
+import redEye from '../../public/reds-eye.json';
 
 export default function about() {
   return (
     <>
-    <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
-      <NavBar />
+      <div className="w-full pb-16">
+        <NavBar />
         <div className="p-4">
-          <Lottie animationData={animationData} style={{ height: 400, width: 400 }} />
+          <Lottie animationData={animationData} style={{ height: 359, width: 359 }} />
           <div className="flex items-center">
             <Lottie animationData={checkAnimeData} style={{ height: '3em', width: '3em' }} />
             <h1 className="mt-5 text-4xl font-bold mb-2 ml-4">ano sonoアプリケーションについて</h1>
@@ -22,8 +23,11 @@ export default function about() {
             ・保存した記事はいつでも閲覧可能で、友人と共有することもできます。<br />
             ・また、ユーザーは記事のタイトルや説明を編集して、自分だけのメモを追加することができます。<br />
           </p>
+          <div className="flex items-center w-full">
+            <Lottie animationData={redEye} style={{ width: '100%', height: 'auto' }} />
+          </div>
         </div>
-      <Footer />
+        <Footer />
       </div>
     </>
   )
