@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { NavBar } from "../app/components/NavBar";
 import Footer from "../app/components/Footer";
 import axios from "axios";
+import { NavBar } from "@/app/components/NavBar";
+
 
 type SearchResult = {
   id: number;
@@ -181,7 +182,7 @@ export default function Search() {
     <>
       <div className="w-full">
         <div className="sticky top-0 z-50">
-          <NavBar />
+        <NavBar />
         </div>
         <div className="flex flex-col items-start mt-6 w-4/5 mx-auto">
           <h1 className="text-2x1 font-bold mb-4">検索画面</h1>

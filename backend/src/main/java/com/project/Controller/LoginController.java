@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-/**
- * Loginに関わる処理を記述するControllerクラス
- */
 @RestController
-
 public class LoginController {
 
-    Logger logger = LoggerFactory.getLogger(HomeController.class);
+    Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private LoginService loginService;
@@ -27,11 +22,18 @@ public class LoginController {
     @Value("${spring.application.name}")
     private String name;
 
-    /**
-     * ログイン処理を行うメソッド
-     */
+    @PostMapping("/api/register")
+    public LoginDto register(@RequestBody LoginForm form) {
+        logger.info("Form: " + form.toString());
+        logger.info(name);
+        LoginDto response = loginService.register(form);
+        logger.info("Response: " + response);
+        return response;
+    }
+
     @PostMapping("/api/login")
     public LoginDto login(@RequestBody LoginForm form) {
+        logger.info("Form: " + form.toString());
         logger.info(name);
         LoginDto response = loginService.login(form);
         logger.info("Response: " + response);

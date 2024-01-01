@@ -9,10 +9,6 @@ services:
       - "3555:3555"
     environment:
       - PORT=3555
-      - GOOGLE_CLIENT_ID=788767528235-jh3gjvl3nc3nvq32ik03bbtdreuvklec.apps.googleusercontent.com
-      - GOOGLE_CLIENT_SECRET=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
-      - NEXTAUTH_URL=http://localhost:3555
-      - NEXTAUTH_SECRET=WkN/yuhOv6yENvPRXkca82HW3zETm4OCNNIdD9fsBx0=
 
   backend:
     build:
@@ -21,6 +17,8 @@ services:
     image: backend
     ports:
       - "8000:8000"
+    volumes:
+      - ./logs:/logs
 
   db:
     build:

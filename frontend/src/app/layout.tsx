@@ -3,6 +3,9 @@ import "./globals.css";
 import { NavBar } from "./components/NavBar";
 import Footer from "./components/Footer";
 import NextAuthProvider from "@/providers/NextAuth";
+import dynamic from 'next/dynamic';
+
+const DynamicNavBar = dynamic(() => import('../app/components/NavBar').then(mod => mod.NavBar), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +31,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description || ""} />
       </head>
       <body className={inter.className}>
-        <NavBar />
+        <DynamicNavBar />
         <NextAuthProvider>{children}</NextAuthProvider>
         <Footer />
       </body>

@@ -5,15 +5,33 @@
 
 <mapper namespace="com.project.mapper.LoginMapper">
     <!-- 登録処理 -->
+    <insert id="register" parameterType="com.project.form.LoginForm">
+        INSERT INTO
+            ano_sono2.USER_MASTER
+        (
+            user_name,
+            email,
+            password,
+            salt
+        )
+        VALUES
+        (
+            #{username},
+            #{email},
+            #{password},
+            #{salt}
+        )
+    </insert>
+
+    <!-- ログイン処理 -->
     <select id="login" parameterType="com.project.form.LoginForm" resultType="com.project.dto.LoginDto">
           SELECT
                 1 as resultFlag,
-                email
+                password,
+                salt
           FROM
-                SPRINGPROJECT.USER_MASTER
+                ano_sono2.USER_MASTER
           WHERE
                 email = #{email}
-          AND
-                password = #{password}
     </select>
  </mapper>

@@ -1,16 +1,19 @@
 import React from 'react'
-import { NavBar } from "../app/components/NavBar";
 import Footer from "../app/components/Footer";
 import Lottie from 'lottie-react';
 import animationData from '../../public/picopico.json';
 import checkAnimeData from '../../public/CheckAnime.json';
 import redEye from '../../public/reds-eye.json';
+import { NavBar } from '@/app/components/NavBar';
+
+
+
 
 export default function about() {
   return (
     <>
       <div className="w-full pb-16">
-        <NavBar />
+      <NavBar />
         <div className="p-4">
           <Lottie animationData={animationData} style={{ height: 359, width: 359 }} />
           <div className="flex items-center">
