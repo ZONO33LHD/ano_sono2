@@ -1,6 +1,7 @@
 package com.project.service.impl;
 
 import com.project.dto.LoginDto;
+import com.project.form.CreateAccountForm;
 import com.project.form.LoginForm;
 import com.project.mapper.LoginMapper;
 import com.project.service.LoginService;
@@ -25,14 +26,14 @@ public class LoginServiceImpl implements LoginService {
      * ユーザ新規登録メソッド
      */
     @Override
-    public LoginDto register(LoginForm form) {
+    public LoginDto register(CreateAccountForm createForm) {
         String salt = getSalt();
-        String hashedPassword = hashPassword(form.getPassword(), salt);
+        String hashedPassword = hashPassword(createForm.getPassword(), salt);
         // hashedPasswordとsaltをformにセットします
-        form.setPassword(hashedPassword);
-        form.setSalt(salt);
+        createForm.setPassword(hashedPassword);
+        createForm.setSalt(salt);
 
-        int result = loginMapper.register(form);
+        int result = loginMapper.register(createForm);
         LoginDto dto = new LoginDto();
         if (result >= 1) {
             dto.setResultFlag(1L); // 登録成功

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.project.mapper.LoginMapper">
     <!-- 登録処理 -->
-    <insert id="register" parameterType="com.project.form.LoginForm">
+    <insert id="register" parameterType="com.project.form.CreateAccountForm">
         INSERT INTO
             ano_sono2.USER_MASTER
         (

@@ -1,6 +1,7 @@
 package com.project.Controller;
 
 import com.project.dto.LoginDto;
+import com.project.form.CreateAccountForm;
 import com.project.form.LoginForm;
 import com.project.service.LoginService;
 import org.slf4j.Logger;
@@ -22,8 +23,11 @@ public class LoginController {
     @Value("${spring.application.name}")
     private String name;
 
+    /**
+     * ユーザ新規登録メソッド
+     */
     @PostMapping("/api/register")
-    public LoginDto register(@RequestBody LoginForm form) {
+    public LoginDto register(@RequestBody CreateAccountForm form) {
         logger.info("Form: " + form.toString());
         logger.info(name);
         LoginDto response = loginService.register(form);
@@ -31,6 +35,9 @@ public class LoginController {
         return response;
     }
 
+    /**
+     * ログインメソッド
+     */
     @PostMapping("/api/login")
     public LoginDto login(@RequestBody LoginForm form) {
         logger.info("Form: " + form.toString());
