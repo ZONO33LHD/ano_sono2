@@ -185,7 +185,7 @@ export default function Search() {
         <NavBar />
         </div>
         <div className="flex flex-col items-start mt-6 w-4/5 mx-auto">
-          <h1 className="text-2x1 font-bold mb-4">検索画面</h1>
+          <h1 className="text-2x1 font-bold mb-4" style={{ fontFamily: 'Monomaniac One' }}>検索しよう！</h1>
           <form onSubmit={handleSearch} className="mb-4 w-full">
             <input
               type="text"

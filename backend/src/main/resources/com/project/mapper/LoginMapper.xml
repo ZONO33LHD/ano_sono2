@@ -28,7 +28,8 @@
           SELECT
                 1 as resultFlag,
                 password,
-                salt
+                salt,
+                user_name
           FROM
                 ano_sono2.USER_MASTER
           WHERE

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import ano_sono_icon from "../../../public/ano_sono_icon.svg";
 
+
 export function NavBar() {
   return (
     <nav className="navbar-container bg-gray-800 text-white p-4 flex flex-wrap justify-between">

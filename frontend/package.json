@@ -21,13 +21,15 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18",
+    "@types/validator": "^13.11.7",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",

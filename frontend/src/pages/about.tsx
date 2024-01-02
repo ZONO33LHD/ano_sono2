@@ -18,7 +18,7 @@ export default function about() {
           <Lottie animationData={animationData} style={{ height: 359, width: 359 }} />
           <div className="flex items-center">
             <Lottie animationData={checkAnimeData} style={{ height: '3em', width: '3em' }} />
-            <h1 className="mt-5 text-4xl font-bold mb-2 ml-4">ano sonoアプリケーションについて</h1>
+            <h1 className="mt-5 text-4xl font-bold mb-2 ml-4" style={{ fontFamily: 'Reggae One' }}>ano sonoアプリケーションについて</h1>
           </div>
           <p className="mt-10 mb-15 text-2xl text-gray-600 leading-10">
             ・ano sonoは、ユーザーがブログ記事を簡単に検索、保存、共有できるウェブアプリケーションです。<br />

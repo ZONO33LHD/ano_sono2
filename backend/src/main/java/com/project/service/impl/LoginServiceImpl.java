@@ -36,13 +36,16 @@ public class LoginServiceImpl implements LoginService {
         LoginDto dto = new LoginDto();
         if (result >= 1) {
             dto.setResultFlag(1L); // 登録成功
+            // saltをnullに設定します
+            dto.setSalt(null);
         } else {
             dto.setResultFlag(0L); // 登録失敗
         }
         return dto;
     }
+
     /**
-     * ログイン処理を行うメソッド
+     * ログインメソッド
      */
     @Override
     public LoginDto login(LoginForm form) {
@@ -53,7 +56,6 @@ public class LoginServiceImpl implements LoginService {
                 dto.setResultFlag(1L); // ログイン成功
                 // 自動ログインのためemailとpasswordをセットします
                 dto.setEmail(form.getEmail());
-                dto.setPassword(form.getPassword());
             } else {
                 dto.setResultFlag(0L); // ログイン失敗
             }
@@ -74,12 +76,11 @@ public class LoginServiceImpl implements LoginService {
             md.update(salt.getBytes());
             byte[] bytes = md.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
+            for (int i = 0; i < bytes.length; i++) {
                 sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        }
-        catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return generatedPassword;

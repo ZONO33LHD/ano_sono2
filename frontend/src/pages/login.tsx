@@ -50,7 +50,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col md:flex-row justify-center">
       <div className="w-full md:w-1/2 container mx-auto my-10 px-4 md:px-12">
-      <h1 className="font-bold text-3xl mb-2" style={{ fontFamily: 'Rampart One' }}>ano_sonoログイン画面</h1>
+      <h1 className="font-bold text-3xl mb-2" style={{ fontFamily: 'Rampart One' }}>ano_sonoログイン</h1>
         <div className="flex justify-end mr-5 text-gray-600 text-sm text-center mt-1">
           <button
             onClick={handleCreateAccountClick}
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                 id="usernameOrEmail"
                 type="text"
-                placeholder="Email"
+                placeholder="Email入力"
                 required
                 {...form.getInputProps("usernameOrEmail")}
               />
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3"
                 id="password"
                 type="password"
-                placeholder="Your password"
+                placeholder="パスワード入力"
                 required
                 {...form.getInputProps("password")}
               />
@@ -103,7 +103,7 @@ export default function LoginPage() {
               className="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
-              Sign in
+              ログイン
             </button>
           </form>
         </div>
