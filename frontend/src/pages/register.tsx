@@ -61,7 +61,7 @@ export default function RegisterPage() {
     const password = form.values.password;
 
     try {
-      const response = await axios.post("http://localhost:8000/api/register", {
+      const response = await axios.post(`${process.env.BACKEND_URL}/api/register`, {
         username,
         email,
         password,
@@ -70,7 +70,7 @@ export default function RegisterPage() {
       // レスポンスに基づいて処理を行う
       if (response.data.resultFlag === 1) {
         // 登録成功時の処理
-          window.location.href = "http://localhost:3555/login";
+          window.location.href = `${process.env.FRONTEND_URL}/`;
       } else {
         // 登録失敗時の処理
         router.push("/register");

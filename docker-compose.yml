@@ -8,6 +8,10 @@ services:
     ports:
       - "3555:3555"
     environment:
+      - NEXTAUTH_URL=http://localhost:3555
+      - NEXTAUTH_SECRET=msjAoFmPoPVor6+PoamBb4PwAauB1U4IpbkRtiPBYek=
+      - FRONTEND_URL=http://localhost:3555
+      - BACKEND_URL=http://localhost:8000
       - PORT=3555
 
   backend:
@@ -35,13 +39,6 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    ports:
-      - "50000:8080"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-
   nginx:
     image: nginx:latest
     ports:
@@ -54,4 +51,3 @@ services:
 
 volumes:
   mysql_data:
-  jenkins_home:

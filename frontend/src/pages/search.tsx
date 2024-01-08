@@ -59,7 +59,7 @@ export default function Search() {
       searchType = "partial";
     }
 
-    const response = await axios.post(`http://localhost:8000/api/blog/search`, {
+    const response = await axios.post(`${process.env.BACKEND_URL}/api/blog/search`, {
       title: searchTerm,
       description: descriptionTerm,
       startIndex: startIndex,
@@ -74,7 +74,7 @@ export default function Search() {
   };
 
   const loadMoreResults = async () => {
-    const response = await axios.post(`http://localhost:8000/api/blog/search`, {
+    const response = await axios.post(`${process.env.BACKEND_URL}/api/blog/search`, {
       title: searchTerm,
       description: descriptionTerm,
       startIndex: searchResults.length,
@@ -110,7 +110,7 @@ export default function Search() {
     }
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/blog/edit/${editId}`,
+        `${process.env.BACKEND_URL}/api/blog/edit/${editId}`,
         {
           id: editId ? editId.toString() : null,
           title: editTitle,
@@ -142,7 +142,7 @@ export default function Search() {
 
   const handleDelete = (id: number) => {
     axios
-      .delete(`http://localhost:8000/api/blog/delete/${id}`)
+      .delete(`${process.env.BACKEND_URL}/api/blog/delete/${id}`)
       .then((response) => {
         // 削除が成功したら、ローカルの状態から削除した投稿を除外
         setSearchResults((prevResults) =>
@@ -150,7 +150,7 @@ export default function Search() {
         );
         // 新たに2つの投稿を取得
         axios
-          .post(`http://localhost:8000/api/blog/search`, {
+          .post(`${process.env.BACKEND_URL}/api/blog/search`, {
             title: searchTerm,
             description: descriptionTerm,
             startIndex: searchResults.length - 1, // 削除後の投稿数をstartIndexとする

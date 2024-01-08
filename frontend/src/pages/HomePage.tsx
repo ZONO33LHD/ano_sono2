@@ -80,7 +80,7 @@ const Page: React.FC = () => {
     }
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/blog/edit/${editingPostId}`,
+        `${process.env.BACKEND_URL}/api/blog/edit/${editingPostId}`,
         {
           id: editingPostId ? editingPostId.toString() : null,
           title: editingTitle,
@@ -119,7 +119,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/blog/count")
+      .get(`${process.env.BACKEND_URL}/api/blog/count`)
       .then((response) => {
         setTotalPages(Math.ceil(response.data / 6));
       })
@@ -144,7 +144,7 @@ const Page: React.FC = () => {
     event.preventDefault();
     setErrorMessage("");
     try {
-      const response = await axios.post("http://localhost:8000/api/blog", {
+      const response = await axios.post(`${process.env.BACKEND_URL}/api/blog`, {
         title: title,
         url: url,
         description: description,
@@ -167,7 +167,7 @@ const Page: React.FC = () => {
         ]);
         // 投稿の総数を再取得
         const countResponse = await axios.get(
-          "http://localhost:8000/api/blog/count"
+          `${process.env.BACKEND_URL}/api/blog/count`
         );
         setTotalPages(Math.ceil(countResponse.data / 6));
         setCurrentPage(Math.ceil(countResponse.data / 6)); // 追加: currentPageを最新のページに更新
@@ -183,11 +183,11 @@ const Page: React.FC = () => {
       return;
     }
     axios
-      .delete(`http://localhost:8000/api/blog/delete/${id}`)
+      .delete(`${process.env.BACKEND_URL}/api/blog/delete/${id}`)
       .then((response) => {
         setPosts(posts.filter((post) => post.id !== id));
         axios
-          .get("http://localhost:8000/api/blog/count")
+          .get("${process.env.BACKEND_URL}/api/blog/count")
           .then((response) => {
             const newTotalPages = Math.ceil(response.data / 6);
             setTotalPages(newTotalPages);
@@ -207,7 +207,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8000/api/blog/get?startIndex=${(currentPage - 1) * 6}`
+        `${process.env.BACKEND_URL}/api/blog/get?startIndex=${(currentPage - 1) * 6}`
       )
       .then((response) => {
         setPosts(response.data);

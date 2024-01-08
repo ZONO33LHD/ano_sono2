@@ -22,7 +22,7 @@ export default function LoginPage() {
     const password = form.values.password;
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
+      const response = await axios.post(`${process.env.BACKEND_URL}/api/login`, {
         email,
         password,
       });
@@ -32,7 +32,7 @@ export default function LoginPage() {
         signIn("credentials", {
           email,
           password,
-          callbackUrl: "http://localhost:3555/",
+          callbackUrl: `${process.env.FRONTEND_URL}/`,
         });
       } else {
         // ログイン失敗時の処理
