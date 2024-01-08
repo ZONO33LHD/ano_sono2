@@ -7,6 +7,8 @@ import Lottie from "lottie-react";
 import animationData from "../../public/CreateAccount.json";
 
 export default function RegisterPage() {
+  const API_URL = process.env.API_URL || 'http://localhost:8000';
+  const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3555';
   const form = useForm({
     initialValues: {
       username: "",
@@ -61,7 +63,7 @@ export default function RegisterPage() {
     const password = form.values.password;
 
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/api/register`, {
+      const response = await axios.post(`${API_URL}/api/register`, {
         username,
         email,
         password,
@@ -70,7 +72,7 @@ export default function RegisterPage() {
       // レスポンスに基づいて処理を行う
       if (response.data.resultFlag === 1) {
         // 登録成功時の処理
-          window.location.href = `${process.env.FRONTEND_URL}/`;
+          window.location.href = `${FRONTEND_URL}/`;
       } else {
         // 登録失敗時の処理
         router.push("/register");

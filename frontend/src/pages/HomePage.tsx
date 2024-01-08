@@ -12,6 +12,7 @@ interface PostProps {
 }
 
 const Page: React.FC = () => {
+  const API_URL = process.env.API_URL || 'http://localhost:8000';
   const [posts, setPosts] = React.useState<PostProps[]>([]);
   const [showModal, setShowModal] = React.useState(false);
   const [url, setUrl] = React.useState("");
@@ -80,7 +81,7 @@ const Page: React.FC = () => {
     }
     try {
       const response = await axios.put(
-        `${process.env.BACKEND_URL}/api/blog/edit/${editingPostId}`,
+        `${API_URL}/api/blog/edit/${editingPostId}`,
         {
           id: editingPostId ? editingPostId.toString() : null,
           title: editingTitle,
@@ -119,7 +120,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.BACKEND_URL}/api/blog/count`)
+      .get(`${API_URL}/api/blog/count`)
       .then((response) => {
         setTotalPages(Math.ceil(response.data / 6));
       })
@@ -144,7 +145,7 @@ const Page: React.FC = () => {
     event.preventDefault();
     setErrorMessage("");
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/api/blog`, {
+      const response = await axios.post(`${API_URL}/api/blog`, {
         title: title,
         url: url,
         description: description,
@@ -167,7 +168,7 @@ const Page: React.FC = () => {
         ]);
         // 投稿の総数を再取得
         const countResponse = await axios.get(
-          `${process.env.BACKEND_URL}/api/blog/count`
+          `${API_URL}/api/blog/count`
         );
         setTotalPages(Math.ceil(countResponse.data / 6));
         setCurrentPage(Math.ceil(countResponse.data / 6)); // 追加: currentPageを最新のページに更新
@@ -183,11 +184,11 @@ const Page: React.FC = () => {
       return;
     }
     axios
-      .delete(`${process.env.BACKEND_URL}/api/blog/delete/${id}`)
+      .delete(`${API_URL}/api/blog/delete/${id}`)
       .then((response) => {
         setPosts(posts.filter((post) => post.id !== id));
         axios
-          .get("${process.env.BACKEND_URL}/api/blog/count")
+          .get("${API_URL}/api/blog/count")
           .then((response) => {
             const newTotalPages = Math.ceil(response.data / 6);
             setTotalPages(newTotalPages);
@@ -207,7 +208,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `${process.env.BACKEND_URL}/api/blog/get?startIndex=${(currentPage - 1) * 6}`
+        `${API_URL}/api/blog/get?startIndex=${(currentPage - 1) * 6}`
       )
       .then((response) => {
         setPosts(response.data);

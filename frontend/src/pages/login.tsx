@@ -7,6 +7,8 @@ import animationData from '../../public/Loginpage.json';
 
 
 export default function LoginPage() {
+  const API_URL = process.env.API_URL || 'http://localhost:8000';
+  const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3555';
   const form = useForm({
     initialValues: {
       usernameOrEmail: "",
@@ -22,7 +24,7 @@ export default function LoginPage() {
     const password = form.values.password;
 
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/api/login`, {
+      const response = await axios.post(`${API_URL}/api/login`, {
         email,
         password,
       });
@@ -32,7 +34,7 @@ export default function LoginPage() {
         signIn("credentials", {
           email,
           password,
-          callbackUrl: `${process.env.FRONTEND_URL}/`,
+          callbackUrl: `${FRONTEND_URL}/`,
         });
       } else {
         // ログイン失敗時の処理
