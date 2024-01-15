@@ -12,7 +12,7 @@ interface PostProps {
 }
 
 const Page: React.FC = () => {
-  const API_URL = process.env.API_URL || 'http://localhost:8000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://aonosono2024.net/api";
   const [posts, setPosts] = React.useState<PostProps[]>([]);
   const [showModal, setShowModal] = React.useState(false);
   const [url, setUrl] = React.useState("");
@@ -81,7 +81,7 @@ const Page: React.FC = () => {
     }
     try {
       const response = await axios.put(
-        `${API_URL}/api/blog/edit/${editingPostId}`,
+        `${API_URL}/blog/edit/${editingPostId}`,
         {
           id: editingPostId ? editingPostId.toString() : null,
           title: editingTitle,
@@ -120,7 +120,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/blog/count`)
+      .get(`${API_URL}/blog/count`)
       .then((response) => {
         setTotalPages(Math.ceil(response.data / 6));
       })
@@ -145,7 +145,7 @@ const Page: React.FC = () => {
     event.preventDefault();
     setErrorMessage("");
     try {
-      const response = await axios.post(`${API_URL}/api/blog`, {
+      const response = await axios.post(`${API_URL}/blog`, {
         title: title,
         url: url,
         description: description,
@@ -167,9 +167,7 @@ const Page: React.FC = () => {
           },
         ]);
         // 投稿の総数を再取得
-        const countResponse = await axios.get(
-          `${API_URL}/api/blog/count`
-        );
+        const countResponse = await axios.get(`${API_URL}/blog/count`);
         setTotalPages(Math.ceil(countResponse.data / 6));
         setCurrentPage(Math.ceil(countResponse.data / 6)); // 追加: currentPageを最新のページに更新
       }
@@ -179,26 +177,18 @@ const Page: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    if (id === undefined) {
-      console.error("id is undefined");
-      return;
-    }
     axios
-      .delete(`${API_URL}/api/blog/delete/${id}`)
-      .then((response) => {
+      .delete(`${API_URL}/blog/delete/${id}`)
+      .then(() => {
         setPosts(posts.filter((post) => post.id !== id));
-        axios
-          .get("${API_URL}/api/blog/count")
-          .then((response) => {
-            const newTotalPages = Math.ceil(response.data / 6);
-            setTotalPages(newTotalPages);
-            if (currentPage > newTotalPages) {
-              setCurrentPage(newTotalPages);
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        return axios.get(`${API_URL}/blog/count`);
+      })
+      .then((response) => {
+        const newTotalPages = Math.ceil(response.data / 6);
+        setTotalPages(newTotalPages);
+        if (currentPage > newTotalPages) {
+          setCurrentPage(newTotalPages);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -207,16 +197,14 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `${API_URL}/api/blog/get?startIndex=${(currentPage - 1) * 6}`
-      )
+      .get(`${API_URL}/blog/get?startIndex=${(currentPage - 1) * 6}`)
       .then((response) => {
         setPosts(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [currentPage]);
+  }, [currentPage, API_URL]);
 
   // コンポーネント内部
   useEffect(() => {

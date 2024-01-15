@@ -16,3 +16,10 @@ server:
   port : 8000
 mybatis:
   mapper-locations: classpath*:com/project/mapper/*.xml
+logging:
+  level:
+    root: INFO
+    '[com.project]': DEBUG
+    '[com.project.controller]': DEBUG
+    '[com.project.service]': DEBUG
+    '[com.project.mapper]': DEBUG

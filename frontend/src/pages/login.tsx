@@ -5,11 +5,16 @@ import { signIn } from "next-auth/react";
 import Lottie from 'lottie-react';
 import animationData from '../../public/Loginpage.json';
 
+interface FormValues {
+  usernameOrEmail: string;
+  password: string;
+}
 
 export default function LoginPage() {
-  const API_URL = process.env.API_URL || 'http://localhost:8000';
-  const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3555';
-  const form = useForm({
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://aonosono2024.net/api';
+  const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://aonosono2024.net';
+
+  const form = useForm<FormValues>({
     initialValues: {
       usernameOrEmail: "",
       password: "",
@@ -19,22 +24,22 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const onSubmit = async () => {
-    const email = form.values.usernameOrEmail;
-    const password = form.values.password;
+  // onSubmit 関数の values パラメータに型を指定します。
+  const onSubmit = async (values: FormValues) => {
+    const { usernameOrEmail, password } = values;
 
     try {
-      const response = await axios.post(`${API_URL}/api/login`, {
-        email,
+      const response = await axios.post(`${API_URL}/login`, {
+        email: usernameOrEmail,
         password,
       });
 
       if (response.status === 200) {
         // ログイン成功時の処理
-        signIn("credentials", {
-          email,
+        await signIn("credentials", {
+          email: usernameOrEmail,
           password,
-          callbackUrl: `${FRONTEND_URL}/`,
+          callbackUrl: FRONTEND_URL,
         });
       } else {
         // ログイン失敗時の処理
@@ -48,6 +53,7 @@ export default function LoginPage() {
   const handleCreateAccountClick = () => {
     router.push("/register");
   };
+
 
   return (
     <div className="flex flex-col md:flex-row justify-center">

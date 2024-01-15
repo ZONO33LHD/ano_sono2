@@ -31,14 +31,36 @@
     <!-- 検索処理 -->
     <select id="getSearchResult" resultType="com.project.entity.UrlStorage"> SELECT * FROM ( SELECT
         * FROM ano_sono2.URL_STORAGE WHERE <choose>
-            <when test="searchForm.searchType == 'exact'"> (#{searchForm.title} IS NOT NULL AND
-        title = #{searchForm.title}) AND (#{searchForm.description} IS NULL OR description LIKE
-        #{searchForm.descriptionWithWildcards}) </when>
-            <when test="searchForm.searchType == 'partial'"> (#{searchForm.title} IS NULL OR title
-        LIKE #{searchForm.titleWithWildcards}) AND (#{searchForm.description} IS NULL OR description
-        LIKE #{searchForm.descriptionWithWildcards}) </when>
-            <otherwise> (#{searchForm.description} IS NULL OR description LIKE
-        #{searchForm.descriptionWithWildcards}) </otherwise>
+            <when test="searchForm.searchType == 'exact'">
+                <if test="searchForm.title != null and searchForm.title != ''">
+                    title = #{searchForm.title}
+                </if>
+                <if test="searchForm.description != null and searchForm.description != ''">
+                    AND description = #{searchForm.description}
+                </if>
+            </when>
+            <when test="searchForm.searchType == 'partial'">
+                <if test="searchForm.title != null and searchForm.title != ''">
+                    title LIKE #{searchForm.titleWithWildcards}
+                </if>
+                <if test="searchForm.description != null and searchForm.description != ''">
+                    <if test="searchForm.title != null and searchForm.title != ''">
+                        AND
+                    </if>
+                    description LIKE #{searchForm.descriptionWithWildcards}
+                </if>
+            </when>
+            <otherwise>
+                <if test="searchForm.title != null and searchForm.title != ''">
+                    title LIKE #{searchForm.titleWithWildcards}
+                </if>
+                <if test="searchForm.description != null and searchForm.description != ''">
+                    <if test="searchForm.title != null and searchForm.title != ''">
+                        AND
+                    </if>
+                    description LIKE #{searchForm.descriptionWithWildcards}
+                </if>
+            </otherwise>
         </choose> ORDER BY id ) t LIMIT
         #{searchForm.limit} OFFSET #{searchForm.startIndex} </select>
 

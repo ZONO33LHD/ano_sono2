@@ -7,8 +7,8 @@ import Lottie from "lottie-react";
 import animationData from "../../public/CreateAccount.json";
 
 export default function RegisterPage() {
-  const API_URL = process.env.API_URL || 'http://localhost:8000';
-  const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3555';
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://aonosono2024.net/api';
+  const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://aonosono2024.net';
   const form = useForm({
     initialValues: {
       username: "",
@@ -23,12 +23,10 @@ export default function RegisterPage() {
         errors.email = "有効なメールアドレスを入力してください";
       }
 
-      const hasUpperCase = /[A-Z]/.test(values.password); // 大文字英字のチェック
-      const hasLowerCase = /[a-z]/.test(values.password); // 小文字英字のチェック
-      const hasNumber = /\d/.test(values.password); // 数字のチェック
-      const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
-        values.password
-      ); // 記号のチェック
+      const hasUpperCase = /[A-Z]/.test(values.password);
+      const hasLowerCase = /[a-z]/.test(values.password);
+      const hasNumber = /\d/.test(values.password);
+      const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(values.password);
 
       if (!hasUpperCase) {
         errors.password = "パスワードには少なくとも1つの大文字英字が必要です";
@@ -51,30 +49,22 @@ export default function RegisterPage() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    Object.keys(form.errors).forEach((key) => {
-      const errorMessage = form.errors[key as keyof typeof form.errors];
-      if (typeof errorMessage === "string") {
-        form.setFieldError(key, errorMessage);
-      }
-    });
+    if (Object.keys(form.errors).length > 0) {
+      return;
+    }
 
-    const username = form.values.username;
-    const email = form.values.email;
-    const password = form.values.password;
+    const { username, email, password } = form.values;
 
     try {
-      const response = await axios.post(`${API_URL}/api/register`, {
+      const response = await axios.post(`${API_URL}/register`, {
         username,
         email,
         password,
       });
 
-      // レスポンスに基づいて処理を行う
       if (response.data.resultFlag === 1) {
-        // 登録成功時の処理
-          window.location.href = `${FRONTEND_URL}/`;
+        window.location.href = FRONTEND_URL;
       } else {
-        // 登録失敗時の処理
         router.push("/register");
       }
     } catch (error) {
